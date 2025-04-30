@@ -1,12 +1,10 @@
-import NavBar from "../components/NavBar";
+import NavBar from '../components/NavBar';
 
 function ErrorPage() {
   return (
     <>
-      <header>
-        <NavBar />
-      </header>
-      <main>
+      <NavBar />
+      <main className="error-page">
         <h1>Oops! Looks like something went wrong.</h1>
       </main>
     </>

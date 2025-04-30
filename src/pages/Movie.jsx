@@ -1,33 +1,34 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import NavBar from "../components/NavBar";
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import NavBar from '../components/NavBar';
 
 function Movie() {
-  const [movie, setMovie] = useState(null);
   const { id } = useParams();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/movies/${id}`)
-      .then(response => response.json())
-      .then(data => setMovie(data));
+    fetch(`http://localhost:4000/movies/${id}`)
+      .then(r => r.json())
+      .then(data => {
+        setMovie(data);
+        setLoading(false);
+      });
   }, [id]);
 
-  if (!movie) return <p>Loading...</p>;
+  if (loading) return <div>Loading...</div>;
+  if (!movie) return <div>Movie not found</div>;
 
   return (
     <>
-      <header>
-        <NavBar />
-      </header>
-      <main>
-        <h1>{movie.title}</h1>
-        <p>{movie.time} minutes</p>
-        <div>
-          {movie.genres.map(genre => (
-            <span key={genre}>{genre}</span>
-          ))}
-        </div>
-      </main>
+      <NavBar />
+      <h1>{movie.title}</h1>
+      <p>Time: {movie.time} minutes</p>
+      <div className="genres">
+        {movie.genres.map((genre, index) => (
+          <span key={index}>{genre}</span>
+        ))}
+      </div>
     </>
   );
 }
